@@ -82,3 +82,16 @@ GET http://localhost:8080/passagens/40811470784
 ###
 
 DELETE http://localhost:8080/passagens/1
+
+###
+
+PUT http://localhost:8080/passagens/validate
+Content-Type: application/json
+
+{
+    "viagem": "2",
+    "codValidacao": "4"
+}
+###
+
+GET http://localhost:8080/viagem/motorista/29306192100

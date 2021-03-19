@@ -21,6 +21,7 @@ async function createTableUsers(){
     showSearchAndAdd();
     hideWarnig();
 }
+
 async function createTableBus(){
     page = 2;
     // globalResouces.main = await getResources("http://localhost:8080/viagens");
@@ -126,13 +127,26 @@ function hideWarnig(){
 async function addResource(event){
     switch(page){
         case 3:
-            let {rota, cidades} = createRotaToPost(event.target.parentNode.id);
-            console.log(cidades);
-            await postResource('http://localhost:8080/rota', rota);
-            await postResource('http://localhost:8080/rota/cidades', cidades);
+            let newRoute = createRotaToPost(event.target.parentNode.id);
+
+            if(newRoute == null) {
+                alert("Cidade de Origem ou Destino não é a mesma da rota");
+            }else {
+                let {rota, cidades} = newRoute;
+                let res = await postResource('http://localhost:8080/rota', rota);
+                if(res.status == "Sucesso") {
+                    res = await postResource('http://localhost:8080/rota/cidades', cidades);
+                    if(res.status == "Error") alert(res.erros);
+                }else {
+                    alert(res.erros);
+                }
+            }
             break;
         case 4:
-            await postResource('http://localhost:8080/viagem', buildJSO(event.target.parentNode.id));
+            let res = await postResource('http://localhost:8080/viagem', buildJSO(event.target.parentNode.id));
+            if(res.status == "Error") {
+                alert(res.erros);
+            }
             break;
         case 6:
             await postResource('http://localhost:8080/cidades', buildJSO(event.target.parentNode.id));
@@ -162,34 +176,44 @@ function createRotaToPost(formId) {
     let nome    = document.getElementById(formId).children[2].value;
     let cidades = document.getElementById(formId).children[5].value;
     cidades = cidades.split(",");
-    console.log(cidades);
 
-    return {
+    let resourceToPost = {
         // rota: {idRota: idRota, nome: nome, nomeOrigem: cidades[0].trim(), nomeDestino: cidades[cidades.length - 1].trim()},
         rota: {idRota: idRota, nome: nome, nomeOrigem: document.getElementById(formId).children[3].value, nomeDestino: document.getElementById(formId).children[4].value},
         cidades: {
             rotaId: idRota,
             cidades: cidades.map((c, index) => {
             return {
-                idRota: idRota,
-                nomeCidade: c.trim(),
+                nome: c.trim(),
                 numSeq: index
             }
-        })
+        })}
+    }
+
+    if(resourceToPost.rota.nomeOrigem == resourceToPost.cidades.cidades[0].nome && resourceToPost.rota.nomeDestino == resourceToPost.cidades.cidades[resourceToPost.cidades.cidades.length -1].nome) {
+        return resourceToPost;
+    }else {
+        return null;
     }
 } 
 
 async function dltResource(){
     console.log(globalResouces.id); 
+    let res = "";
     switch(page){
         case 3:
-            await deleteResource(`http://localhost:8080/rota/${globalResouces.id}`);
+            res = await deleteResource(`http://localhost:8080/rota/${globalResouces.id}`);
             break;
         case 4:
-            await deleteResource(`http://localhost:8080/viagem/${globalResouces.id}`);
+            res = await deleteResource(`http://localhost:8080/viagem/${globalResouces.id}`);
+            break;
+        case 41:
+            res = await deleteResource(`http://localhost:8080/passagens/${globalResouces.id}`);
             break;
         case 6:
-            await deleteResource(`http://localhost:8080/cidades/${globalResouces.id}`);
+            res = await deleteResource(`http://localhost:8080/cidades/${globalResouces.id}`);
             break;
     }
+
+    if(res.status == "Error") alert(res.erros);
 }

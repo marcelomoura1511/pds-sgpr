@@ -5,18 +5,17 @@ function loadLoginPage(){
 async function startBusca(){
     let org = document.getElementById('origem').value;
     let des = document.getElementById('destino').value;
-    console.log("testeeeeeeeeeeeeeeeeeeeeee");
+
     if(org == ''){
         alert('Escolha uma origem(local de partida)!');
     }else{
         document.getElementById('bkTrips').innerHTML = "";
-
-        // if(des == ''){
-        //     viagens = await getViagens(makeUrlWithOrg(org));
-        // }else{
-        //     viagens = await getViagens(makeUrlWithOrgDes(org, des));
-        // }
-        viagens = await getViagens(`http://localhost:8080/viagem/busca?origem=${org}&destino=${des}`);
+        
+        if(des == ''){
+            viagens = await getViagens(makeUrlWithOrg(org));
+        }else{
+            viagens = await getViagens(makeUrlWithOrgDes(org, des));
+        }
 
         activeAnimation2();
         if(viagens.length == 0){
@@ -28,11 +27,11 @@ async function startBusca(){
 }
 
 function makeUrlWithOrgDes(origem, destino){
-    return `http://localhost:8080/viagens/busca?origem=${origem}&destino=${destino}`;
+    return `http://localhost:8080/viagem/busca?origem=${origem}&destino=${destino}`;
 }
 
 function makeUrlWithOrg(origem){
-    return `http://localhost:8080/viagens/busca?origem=${origem}`;
+    return `http://localhost:8080/viagem/busca?origem=${origem}`;
 }
 
 function loadWaringNotFoundViagens(){

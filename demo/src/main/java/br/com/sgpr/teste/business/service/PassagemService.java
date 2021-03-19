@@ -7,10 +7,12 @@ import java.util.ArrayList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import br.com.sgpr.teste.business.entity.PassagemUsada;
 import br.com.sgpr.teste.business.entity.PassagensViagem;
 import br.com.sgpr.teste.business.entity.TempPassagem;
 import br.com.sgpr.teste.business.entity.Viagem;
 import br.com.sgpr.teste.business.exceptions.BusinessExceptions;
+import br.com.sgpr.teste.data.PassagemUsadaRepository;
 import br.com.sgpr.teste.data.PassagensViagemsRepository;
 import br.com.sgpr.teste.data.TempPassagemRepository;
 import br.com.sgpr.teste.data.ViagemRepository;
@@ -21,6 +23,8 @@ public class PassagemService {
     private PassagensViagemsRepository passagensViagensRepository;
     @Autowired
     private TempPassagemRepository passagemRepository;
+    @Autowired
+    private PassagemUsadaRepository passagemUsadaRepository;
     @Autowired
     private ViagemRepository viagemRepository;
 
@@ -79,10 +83,24 @@ public class PassagemService {
         Viagem viagem = viagemRepository.findById(viagemOfPassagemToDeleteId).orElseGet(() -> null);
         if(viagem.getAsssentosDisponiveis() > 0) {
             passagemRepository.deleteById(passId);
-            viagemRepository.updateAssentosDisponiveis(viagem.getId(), viagem.getAsssentosDisponiveis() - 1);
+            viagemRepository.updateAssentosDisponiveis(viagem.getId(), viagem.getAsssentosDisponiveis() + 1);
         }else {
             //to do, criar exeção para esse caso.
             System.out.println("Viagem não tem passagens");
+        }
+    }
+
+    public void validetedPassagem(PassagensViagem passToValidate) throws Exception{
+        System.out.println("Validando a passagem de id " + passToValidate.getCodValidacao() + " da viagem " +  passToValidate.getViagem());
+        TempPassagem pass = passagemRepository.findById(passToValidate.getCodValidacao()).orElseGet(() -> null);
+        Viagem viagem = viagemRepository.findById(pass.getViagem()).orElseGet(() -> null);
+
+        if(pass == null || viagem.getId() != passToValidate.getViagem()) {
+            throw new Exception("Passagem Inválida");
+        }else{
+            PassagemUsada oldPass = new PassagemUsada(pass);
+            passagemRepository.deleteById(pass.getCodValidacao());
+            passagemUsadaRepository.save(oldPass);
         }
     }
 }

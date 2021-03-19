@@ -18,8 +18,9 @@ async function postResource(urlToPost, resourceToPost){
             },
             body: JSON.stringify(resourceToPost)
         });
-        // let msg = await response.json();
-        console.log(response);
+        let msg = await response.json();
+        console.log(msg ? msg : response);
+        return msg;
     } catch (error) {
         console.log(error)
     }
@@ -30,8 +31,9 @@ async function deleteResource(urlToDelete){
         let response = await fetch(urlToDelete, {
             method: "DELETE"
         });
-        let resJson = await response.json();
-        console.log(resJson);
+        let msg = await response.json();
+        console.log(msg ? msg : response);
+        return msg;
     } catch (error) {
         console.log(error)
     }

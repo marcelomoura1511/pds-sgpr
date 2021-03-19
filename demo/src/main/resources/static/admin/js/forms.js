@@ -17,6 +17,13 @@ function showAddForm(){
             break;
         case 4:
             let atrVig = Object.keys(globalResouces.main[0]);
+            atrVig = atrVig.filter((viagemAtr) => {
+                if(viagemAtr == "assentosDisponiveis") {
+                    return false;
+                }else {
+                    return true;
+                }
+            })
             createAddForm(atrVig.slice(3, atrVig.length), 'Viagem');
             break;
         case 41:
@@ -75,13 +82,13 @@ async function createFormUpdateDelete(row){
         })
         let cityString = "";
         for(let c of globalResouces.dependence){
-            cityString += c.nomeCidade + ", ";
+            cityString += c.nome + ", ";
         }
         let temp = Object.keys(globalResouces.main[0]);
         temp.push("rota");
         createInputForm(temp);
-        putValueIntoInput(0, Object.keys(globalResouces.dependence[0]).length, row);
-        document.getElementById("mainForm").children[3].value = cityString;
+        putValueIntoInput(0, 4, row);
+        document.getElementById("mainForm").children[5].value = cityString;
     }else if(page == 4){
         let atrVig = Object.keys(globalResouces.main[0]);
         createInputForm(atrVig.slice(3, atrVig.length));
@@ -136,7 +143,7 @@ function createBtnsAddForm(){
 function createBtnsUpdateForm(){
     let classBtnUp = 'formsButton confirBtn ' + 'heightBtnInputUp' + page;
     let classBtnDel = 'formsButton deleteBtn ' + 'heightBtnInputUp' + page;
-    let btnDelete = createButton('Deletar', classBtnDel);
+    let btnDelete = page == 41 ? createButton('Cancelar', classBtnDel) : createButton('Deletar', classBtnDel);
     btnDelete.addEventListener("click", dltResource);
 
     document.getElementById('mainForm').appendChild(createButton('Atualizar', classBtnUp));

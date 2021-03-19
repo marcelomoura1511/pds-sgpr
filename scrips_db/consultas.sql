@@ -9,7 +9,7 @@ select * from viagem;
 
 select * from empresa;
 
-select v.id_viagem as id, c.nome as Origem, c1.nome as Destino, v.data_viagem, v.hora_saida, v.preco, m.nome as motorista, o.num_placa as onibus, r.id_rota as rota, v.status_saida as estado, e.nome as empresa 
+select v.id_viagem as id, c.nome as Origem, c1.nome as Destino, v.data_viagem, v.hora_saida, v.preco, m.nome as motorista, v.motorista as cpf_motorista, o.num_placa as onibus, r.id_rota as rota, v.status_saida as estado, e.nome as empresa 
 from viagem as v, motorista as m, onibus as o, rota as r, cidades as c, cidades as c1, empresa as e
 where 
 v.rota = r.id_rota and 
@@ -50,3 +50,11 @@ update viagem set assentos_disponiveis = 19 where id_viagem = 1;
 insert into passagem values('1', 1, 5, '40811470784');
 
 insert into passagem values('2', 2, 5, '40811470784');
+
+select * from passagem where cod_validacao = '2';
+
+select * from passagem_usadas;
+
+select * from motorista;
+
+select * from viagens_simples;

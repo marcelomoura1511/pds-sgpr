@@ -58,14 +58,14 @@ public class RotaController {
     }
 
     @PostMapping(path="/cidades")
-    public String postRotaCidades(@RequestBody AuxRotaCidade rotaCidades){
+    public Mensagem postRotaCidades(@RequestBody AuxRotaCidade rotaCidades){
         try {
-            return rotaCidadesService.saveCidadesDaRota(rotaCidades);
+            rotaCidadesService.saveCidadesDaRota(rotaCidades);
+            return new Mensagem("Sucesso");
         } catch (BusinessExceptions e) {
-            for(String exp : e.getListOfMenssagens()) {
-                System.out.println(exp);
-            }
-            return "Cidades da rota invalida";
+            Mensagem msg = new Mensagem("Error");
+            msg.setErros(e.getListOfMenssagens());
+            return msg;
         }
     }
 

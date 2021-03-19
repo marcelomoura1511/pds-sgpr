@@ -45,6 +45,55 @@ Response:
 ]
 ```
 
+Resquest:
+`http://localhost:8080/viagem/busca?origem=nomeOrigem&destino=nomeDestino`
+
+ou
+
+`http://localhost:8080/viagem/busca?origem=nomeOrigem`
+
+Response:
+```
+{
+	assentosDisponiveis: 20
+	data: "2021-06-15"
+	destino: "Natal"
+	empresa: "Sertão"
+	horaSaida: "13:00"
+	id: 1
+	motorista: "Isabella Rayssa Carvalho"
+	onibus: "HZV8911"
+	origem: "Assu"
+	preco: 150
+	rota: "a-n"
+	status: "confirmada"
+}
+```
+Resquet:
+
+`GET http://localhost:8080/viagem/motorista/motoristId`
+
+Response:
+```
+[
+  {
+    "id": 1,
+    "origem": "Assu",
+    "destino": "Natal",
+    "data": "2021-06-15",
+    "preco": 150.0,
+    "motorista": "29306192100",
+    "onibus": "HZV8911",
+    "rota": "a-n",
+    "status": "confirmada",
+    "empresa": "Sertão",
+    "assentosDisponiveis": 20,
+    "horaSaida": "13:00"
+  },
+  ...,
+]
+```
+
 Request:
 
 `POST http://localhost:8080/viagem`
@@ -76,7 +125,7 @@ Response:
 
 Request:
 
-`GET http://localhost:8080/passagens?viagemId=id` 
+`GET http://localhost:8080/passagens/userId` 
 
 | id = id da viagem |
 
@@ -94,6 +143,30 @@ Response:
 	...
 ]
 ```
+
+Request:
+
+`PUT http://localhost:8080/passagens/validate`
+
+Body:
+```
+{
+    "viagem": "2",
+    "codValidacao": "4"
+}
+```
+
+Response:
+
+`Mensagem de sucesso ou erro`
+
+Request:
+
+`DELETE http://localhost:8080/passagens/passagemId`
+
+Response:
+
+`Mensagem de sucesso ou erro`
 
 ## Rotas
 

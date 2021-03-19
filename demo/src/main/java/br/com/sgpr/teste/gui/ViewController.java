@@ -24,4 +24,9 @@ public class ViewController {
     public String getUserHomepagePage(){
         return "userHomepage.html";
     }
+
+    @GetMapping(path = "validate")
+    public String getValidate(){
+        return "validate.html";
+    }
 }

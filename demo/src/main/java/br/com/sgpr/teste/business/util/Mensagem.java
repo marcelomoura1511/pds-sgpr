@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class Mensagem {
     private String status;
-    private ArrayList<String> Erros;
+    private ArrayList<String> erros;
 
     public Mensagem(String status) {
         this.status = status;
@@ -19,12 +19,18 @@ public class Mensagem {
     }
 
     public ArrayList<String> getErros() {
-        return Erros;
+        return erros;
     }
 
     public void setErros(ArrayList<String> erros) {
-        Erros = erros;
+        this.erros = erros;
     }
     
+    public void addErro(String error) {
+        if(erros == null) {
+            erros = new ArrayList<>();
+        }
+        erros.add(error);
+    }
     
 }

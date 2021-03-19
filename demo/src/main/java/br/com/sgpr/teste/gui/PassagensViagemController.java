@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -39,6 +40,18 @@ public class PassagensViagemController {
         } catch (BusinessExceptions e) {
             Mensagem msg = new Mensagem("Error");
             msg.setErros(e.getListOfMenssagens());
+            return msg;
+        }
+    }
+
+    @PutMapping(path = "/validate")
+    public Mensagem validadePass(@RequestBody PassagensViagem pass) {
+        try {
+            passagemService.validetedPassagem(pass);
+            return new Mensagem("Sucesso");
+        } catch (Exception e) {
+            Mensagem msg = new Mensagem("Error");
+            msg.addErro(e.getMessage());
             return msg;
         }
     }

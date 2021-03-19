@@ -11,17 +11,21 @@ import org.springframework.stereotype.Service;
 import br.com.sgpr.teste.business.entity.Rota;
 import br.com.sgpr.teste.business.entity.TempOnibus;
 import br.com.sgpr.teste.business.entity.Viagem;
+import br.com.sgpr.teste.business.entity.ViagemSimples;
 import br.com.sgpr.teste.business.entity.VisaoViagens;
 import br.com.sgpr.teste.business.exceptions.BusinessExceptions;
 import br.com.sgpr.teste.data.RotaRepository;
 import br.com.sgpr.teste.data.TempOnibusRepository;
 import br.com.sgpr.teste.data.ViagemRepository;
+import br.com.sgpr.teste.data.ViagemSimplesRepository;
 import br.com.sgpr.teste.data.VisaoViagensRepository;
 
 @Service
 public class ViagemService {
     @Autowired
-    private ViagemRepository viagemRepository;
+	private ViagemRepository viagemRepository;
+	@Autowired
+	private ViagemSimplesRepository viagemSimplesRepository;
     @Autowired
 	private VisaoViagensRepository viagensRepository;
 	@Autowired
@@ -58,6 +62,10 @@ public class ViagemService {
 	public VisaoViagens getViagemById(int viagemId) {
 		Optional<VisaoViagens> viagem = viagensRepository.findById(viagemId);
 		return viagem.orElseGet(() -> null);
+	}
+
+	public Iterable<ViagemSimples>  getViagemByMotorita(String motoristaId) {
+		return viagemSimplesRepository.findAllViagensMotorista(motoristaId);
 	}
 
 	public Iterable<VisaoViagens> pesquisarViagens(String origem, String destino){

@@ -94,4 +94,5 @@ insert into passagem values('1', 1, 5, '40811470784'),
 ('5', 2, 1, '94425112385'),
 ('6', 2,  8, '95819702409');
 
+
 INSERT INTO usuario VALUES ('admin','Administrador','$2a$10$KQ3emS.zesbctETUvV/SnOxAQZ1En8BUImqXYxnqmnJV34cg5rcmi');

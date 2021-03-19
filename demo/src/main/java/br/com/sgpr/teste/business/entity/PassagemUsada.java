@@ -3,14 +3,24 @@ package br.com.sgpr.teste.business.entity;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity
-public class PassagensViagem {
+@Table(name = "passagem_usadas")
+public class PassagemUsada {
     private String codValidacao;
     private int viagem;
     private int numAssento;
     private String cpf;
-    private String nome;
+
+    public PassagemUsada() {}
+
+    public PassagemUsada(TempPassagem pass) {
+        this.codValidacao = pass.getCodValidacao();
+        this.viagem = pass.getViagem();
+        this.numAssento = pass.getNumAssento();
+        this.cpf = pass.getCpf();
+    }
 
     @Id
     @Column(name = "cod_validacao")
@@ -18,7 +28,6 @@ public class PassagensViagem {
         return codValidacao;
     }
 
-    @Column(name = "cod_validacao")
     public void setCodValidacao(String novoCodValidacao){
         codValidacao = novoCodValidacao;
     }
@@ -37,25 +46,17 @@ public class PassagensViagem {
         return numAssento;
     }
 
-    @Column(name = "num_assento")
     public void setNumAssento(int numAssento) {
         this.numAssento = numAssento;
     }
 
+    @Column(name = "cpf_dono")
     public String getCpf() {
         return cpf;
     }
 
     public void setCpf(String cpf) {
         this.cpf = cpf;
-    }
-
-    public String getNome() {
-        return nome;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
     }
     
 }
